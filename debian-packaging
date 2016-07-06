@@ -1,0 +1,14 @@
+
+mkdir -p ~/var/debian-packaging/hello-cpp/debian/hello-cpp
+cd ~/var/debian-packaging/hello-cpp/debian/hello-cpp
+git init
+git ci -m --allow-empty "empty repository"
+git branch upstream
+git-import-orig ../../upstream/hello-cpp_0.0.3.tar.gz
+
+dh_make -s -p hello-cpp_0.0.3 -c gpl3
+
+#dpkg-buildpackage -us -uc
+#dpkg-buildpackage -B
+debuild
+# fix debian files...

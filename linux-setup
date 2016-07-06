@@ -1,0 +1,9 @@
+- install debian-xfce
+- install missing packages:
+    # apt-get install aptitude emacs emacs-goodies-el joe git tig tree
+- update alternative
+    # update-alternative --config editor
+    (select jmacs)
+- install dotconfig
+    $ mkdir var && cd var && git clone https://github.com/ppoile/dotconfig
+- configure name and email address in ~/.gitconfig
