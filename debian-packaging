@@ -12,3 +12,22 @@ dh_make -s -p hello-cpp_0.0.3 -c gpl3
 #dpkg-buildpackage -B
 debuild
 # fix debian files...
+
+pdebuild
+sudo DIST=stable git-pbuilder create
+
+
+-- or --
+
+mkdir debian4
+cd debian4
+mkdir hello-cpp
+cd hello-cpp/
+git init
+git ci -m "empty repository" --allow-empty
+git branch upstream
+git import-dsc ../../debian3/hello-cpp_0.0.4-1.dsc
+sudo DIST=stable git-pbuilder create
+sudo DIST=stable git pbuilder update
+export DIST=stable
+git buildpackage
