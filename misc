@@ -1,0 +1,64 @@
+== bash
+
+-- loops
+
+for i in {1..10}; do <cmd> || break; done
+for i in {1..10}; do echo "iteration $i..."; <cmd> || break; done
+
+
+-- calc disk usage
+
+find /data -maxdepth 1 -type d -daystart -mtime +${OLDER_THAN_DAYS} | wc -l
+find /data -maxdepth 1 -type d -daystart -mtime +${OLDER_THAN_DAYS} | xargs du -sb | cut -f 1 | paste -s -d "+" | bc
+
+
+== rsync
+
+time rsync -avz --delete --progress /<from-dir>/ /to-dir>/
+
+
+== sed
+
+# remove timestamps from all features =
+$ find . -name "*.feature" -exec sed -i -r 's/\s+#\s*[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{4,6}$//g' {} \;
+
+# remove lines
+$ sed -n '/<pattern>/!p' <file>
+
+
+== gdb
+
+-- cgdb
+$ cgdb <exe> <core>
+(gdb) set solib-search-path <dir-1>:<dir-22>
+
+...or:
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<dir-1>:<dir-2>
+
+cd to bin dir
+then:
+$ sudo gdb -p <pid>
+(gdb) info sharedlibrary
+(gdb) info threads
+(gdb) backtrace
+
+
+== docker
+
+$ sudo docker images
+$ sudo docker ps -a
+$ sudo docker rm <id>
+$ sudo docker rmi <id>
+
+$ sudo docker commit ...
+$ sudo docker run -ti --entrypoint=sh user/test_image
+
+
+/etc/default/docker: DOCKER_OPTS="--storage-driver=aufs --dns 10.0.3.1 --dns 162.132.192.252 --dns 162.132.170.6"
+
+
+== valgrind
+
+valgrind --leak-check=yes --num-callers=20 --track-origins=yes --log-file=%p.vg --xml=yes --xml-file=%p.xml
+valgrind --leak-check=yes --num-callers=20 --track-origins=yes --xml=yes --xml-file=%p.xml
+valgrind --leak-check=yes --num-callers=20 --track-origins=yes --log-file=%p.vg --xml=yes --xml-file=%p.xml
