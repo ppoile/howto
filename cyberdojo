@@ -1,0 +1,19 @@
+# First make sure docker is installed
+curl -O https://raw.githubusercontent.com/cyber-dojo/web/master/cli/install-docker.sh
+chmod +x install-docker.sh
+sudo ./install-docker.sh
+
+# Then download cyber-dojo shell script
+
+curl -O https://raw.githubusercontent.com/cyber-dojo/web/master/cli/cyber-dojo
+chmod +x cyber-dojo
+
+# Then use the script to control your server
+
+sudo ./cyber-dojo update
+
+# Patch docker-compose.yml as follows:
+-     - "80:80"
++     - "8080:80"
+
+sudo ./cyber-dojo up
