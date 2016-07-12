@@ -1,0 +1,63 @@
+BeagleBoneBlack (Revision C.1)
+==============================
+
+Processor: AM3358BZCZ100, 1GHz, 2000MIPS
+DRAM: 512MB DDR3L 800MHz
+Flash: 4GB eMMC
+
+power up
+========
+
+To boot from the SD card, press and hold the button next to P8/45 prior to
+powering up the board.
+
+This procedure does not apply when the board is reset.
+
+
+serial connection
+=================
+
+(Connect the USB cable and find the device name in /var/log/syslog.)
+
+$ apt-get install screen
+
+$ screen /dev/ttyUSB0 115200
+
+Press the space key to break into uboot and enter 'boot' to continue.
+
+login: root (no password)
+
+Find the IP with:
+# ifconfig
+
+Leave screen with C-a \.
+
+
+SSH
+===
+
+$ ssh root@192.168.35.197
+
+
+Open questions
+==============
+
+- What about TFTP (kernel) and NFS (rootfs)?
+- NFS: Install nfs-common...
+
+
+Links
+=====
+
+https://youtrack.bbv.ch/issue/KCP-67
+https://wiki.bbv.ch/index.php/ARM_with_RT-cores
+
+https://beagleboard.org/black
+http://elinux.org/Beagleboard:BeagleBoneBlack
+http://www.ti.com/product/AM3358
+
+http://processors.wiki.ti.com/index.php/PRU-ICSS
+
+https://training.ti.com/processor-sdk-training-series
+
+https://github.com/bbvch/pru-farbsort
