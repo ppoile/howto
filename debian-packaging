@@ -1,4 +1,18 @@
 
+1. setup upstream project (e.g. https://github.com/ppoile/hello-cpp)
+
+mkdir -p ~/var/debian-packaging/hello-cpp/upstream/hello-cpp
+
+# fill hello.cpp, Makefile, LICENSE and README with life
+# use make variables like: $(CXX) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS)
+# use installation target path: $(DESTDIR)/usr/bin
+
+
+2. setup debian packaging project (e.g. )
+
+
+====
+
 mkdir -p ~/var/debian-packaging/hello-cpp/debian/hello-cpp
 cd ~/var/debian-packaging/hello-cpp/debian/hello-cpp
 git init
