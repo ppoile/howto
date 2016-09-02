@@ -19,9 +19,8 @@ serial connection
 
 (Connect the USB cable and find the device name in /var/log/syslog.)
 
-$ apt-get install screen
-
-$ screen /dev/ttyUSB0 115200
+# apt-get install microcom
+$ microcom -p /dev/ttyUSB0  # Ctrl-\ quit to disconnect
 
 Press the space key to break into uboot and enter 'boot' to continue.
 
@@ -37,6 +36,20 @@ SSH
 ===
 
 $ ssh root@192.168.35.197
+
+
+PRU
+===
+
+export PRU_CGT=/home/andi/prog/ti-processor-sdk-linux-rt-am335x-evm-02.00.02.11/linux-devkit/sysroots/x86_64-arago-linux/usr/share/ti/cgt-pru
+export PRU_LIB=/home/andi/prog/ti-processor-sdk-linux-rt-am335x-evm-02.00.02.11/example-applications/pru-icss-4.0.2
+make
+
+scp tracebuffer/firmware root@beaglebone-black:/lib/firmware/am335x-pru0-fw
+scp halt/firmware root@beaglebone-black:/lib/firmware/am335x-pru1-fw
+ssh root@beaglebone-black
+./load.sh
+cat /sys/kernel/debug/remoteproc/remoteproc1/trace0
 
 
 Open questions
@@ -61,3 +74,64 @@ http://processors.wiki.ti.com/index.php/PRU-ICSS
 https://training.ti.com/processor-sdk-training-series
 
 https://github.com/bbvch/pru-farbsort
+
+
+Show case
+=========
+
+pru-cape pins:
+  P1.15 schematic-name=PR1_PRU0_GPI15 (pin-name=GPMC_AD15, zcz-ball-number=U13, mode=6)
+  P1.16 PR1_PRU0_GPI14 (GPMC_AD14, V13, 6)
+  P1.27 PR1_PRU_EDIO_DATA_OUT2 (LCD_VSYNC, U5, 4)
+  P1.28 PR1_PRU_EDIO_DATA_OUT4 (LCD_PCLK, V5, 4)
+  P1.29 PR1_PRU_EDIO_DATA_OUT3 (LCD_HSYNC, R5, 4)
+  P1.30 PR1_PRU_EDIO_DATA_OUT5 (LCD_AC_BIAS_EN, R6, 4)
+  P1.39 PR1_PRU_EDIO_DATA_OUT6 (LCD_DATA6, T3, 4)
+  P1.41 PR1_PRU1_GPO4 (LCD_DATA4, T1, 5)
+  P1.42 PR1_PRU1_GPO5 (LCD_DATA5, T2, 5)
+  P1.43 PR1_PRU1_GPO2 (LCD_DATA2, R3, 5)
+  P1.44 PR1_PRU1_GPO3 (LCD_DATA3, R4, 5)
+  P1.45 PR1_PRU1_GPO0 (LCD_DATA0, R1, 5)
+  P1.46 PR1_PRU1_GPO1 (LCD_DATA1, R2, 5)
+
+  P2.17 PR1_PRU_EDIO_DATA_OUT1 (SPI0_CS0, A16, 6)
+  P2.18 PR1_PRU_EDIO_DATA_OUT0 (SPI0_D1, B16, 6)
+  P2.19 I2C2_SDA (UART1_RTSn, D17, 3)  !!!! I2C2_SCL auf BBB-schematic !!!!
+  P2.20 I2C2_SCL (UART1_CTSn, D18, 3)  !!!! I2C2_SDA auf BBB-schematic !!!!
+  P2.21 PR1_UART0_RTS (SPI0_D0, B17, 4)
+  P2.22 PR1_UART0_CTS (SPI0_SCLK, A17, 4)
+  P2.24 PR1_UART0_TXD (UART1_TXD, D15, 5)
+  P2.25 PR1_PRU0_GPI7 (MCASP0_AHCLKX, A14, 6)
+  P2.26 PR1_UART0_RXD (UART1_RXD, D16, 5)
+  P2.27 PR1_PRU0_GPI5 (MCASP0_FSR, C13, 6)
+  P2.28 PR1_PRU0_GPO3 (MCASP0_AHCLKR, C12, 5)
+  P2.29 PR1_PRU0_GPO1 (MCASP0_FSX, B13, 5)
+  P2.30 PR1_PRU0_GPO2 (MCASP0_AXR0, D12, 5)
+  P2.31 PR1_PRU0_GPO0 (MCASP0_ACLKX, A13, 5)
+  P2.42 PR1_ECAP0_IN_PWM0_OUT (ECAP0_IN_PWM0_OUT, C18, 3) ????
+
+osso-cape pins:
+  P1.7  REL7 GPMC_ADVn_ALE, R7, 7 (gpio2_2)  !!!! no pru access !!!!
+  P1.9  REL4 GPMC_BEn0_CLE, T6, 7 (gpio2_5)  !!!! no pru access !!!!
+  P1.11 IN2 GPMC_AD13, R12  !!!! no pru read access !!!!
+  P1.12 IN4 GPMC_AD12, T12  !!!! no pru read access !!!!
+  P1.15 IN1 GPMC_AD15, U13, 6 (pr1_pru0_pru_r31_15)
+  P1.14 IN3 GPMC_AD10, T11  !!!! no pru read access !!!!
+  P1.17 IN6 LCD_VSYNC, U5, 6 (pr1_pru1_pru_r31_8)
+  P1.16 IN5 GPMC_AD14, V13, 6 (pr1_pru0_pru_r31_14)
+  P1.18 IN7 GPMC_CLK, V12  !!!! no pru access !!!!
+  P1.26 IN8 GPIO1_29, V6  !!!! no pru access !!!!
+
+  P2.9 PWR_BUT
+  P2.12 REL1 GPMC_BEn1, U18  !!!! no pru access !!!!
+  P2.15 REL2 GPMC_A0/GPMC_CSn3, R13/T13, -/-  !!!! no pru access !!!!
+  P2.17 I2C1_SCL I2C1_SCL
+  P2.18 I2C1_SDA I2C1_SDA
+  P2.19 I2C2_SCL I2C2_SCL
+  P2.20 I2C2_SDA I2C2_SDA
+  P2.23 REL3 GPMC_A1, V14  !!!! no pru access !!!!
+  P2.24 BB_TX UART1_TXD
+  P2.26 BB_RX UART1_RXD
+  P2.27 REL5 MCASP0_FSR, C13, 5 (pr1_pru0_pru_r30_5)
+  P2.41 REL6 XDMA_EVENT_INTR1/MCASP0_AXR1, D14/D13, -/5 (pr1_pru0_pru_r30_6)
+  P2.42 REL8 ECAP0_IN_PWM0_OUT/MCASP0_ACLKR, C18/B12, 0 (PWM)/5 (pr1_pru0_pru_r30_4)
