@@ -1,0 +1,38 @@
+Documentation:
+http://docs.buildbot.net/0.8.9/full.html
+
+Local server:
+http://localhost:8010/waterfall
+
+Docker:
+wget https://raw.githubusercontent.com/buildbot/buildbot/master/master/Dockerfile
+sudo docker build -t buildbot - < Dockerfile
+# But this failed!
+
+
+Install locally:
+sudo su
+
+aptitude install buildbot
+cd /var/lib/buildbot
+buildbot create-master masters/default
+mv masters/default/master.cfg.sample masters/default/master.cfg
+# edit change_source, schedulers and builders in master.cfg
+buildbot start masters/default
+
+buildslave create-slave slaves/slave-1 localhost:9989 example-slave pass
+#sudo su -s /bin/sh -c "buildslave create-slave slaves/slave-1 localhost:9989 example-slave pass" - buildbot
+
+buildslave start slaves/slave-1
+
+# Open http://localhost:8010 in browser
+
+# stop deamons, fix config and start them via systemd
+
+buildslave stop slaves/slave-1
+buildbot stop masters/default
+
+chown buildbot:buildbot --recursive masters/ slaves/
+
+systemctl start buildmaster.service
+systemctl start buildslave.service
