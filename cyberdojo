@@ -17,3 +17,5 @@ sudo ./cyber-dojo update
 +     - "8080:80"
 
 sudo ./cyber-dojo up
+
+# Now, open http://localhost:8080 in browser
