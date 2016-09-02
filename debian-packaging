@@ -1,3 +1,24 @@
+Releases:
+ - unstable (sid, always sid)
+ - testing (stretch as of today)
+ - stable (jessie as of today)
+ - Debian 8 (jessie)
+ - Debian 7 (wheezy)
+ - Debian 6.0 (squeeze)
+ - Debian GNU/Linux 5.0 (lenny)
+ - Debian GNU/Linux 4.0 (etch)
+ - Debian GNU/Linux 3.1 (sarge)
+ - Debian GNU/Linux 3.0 (woody)
+ - Debian GNU/Linux 2.2 (potato)
+ - Debian GNU/Linux 2.1 (slink)
+ - Debian GNU/Linux 2.0 (hamm)
+
+Links:
+ - https://wiki.debian.org/PackagingWithGit
+
+
+====
+
 
 1. setup upstream project (e.g. https://github.com/ppoile/hello-cpp)
 
@@ -43,5 +64,93 @@ git branch upstream
 git import-dsc ../../debian3/hello-cpp_0.0.4-1.dsc
 sudo DIST=stable git-pbuilder create
 sudo DIST=stable git pbuilder update
+
 export DIST=stable
 git buildpackage
+
+git import-orig ../../upstream/hello-cpp_0.0.5.dsc
+git dch
+DIST=stable git buildpackage
+git add -p
+git ci -m "debian: update changelog"
+pdebuild
+git tag -n  # to check annotated tags
+git tag -a debian/0.0.5-1 -m "Debian release 0.0.5-1"
+
+DIST=stable git buildpackage
+DIST=stable git buildpackage --git-tag
+
+# using the upstream repo
+DIST=stable git buildpackage --git-upstream-tag="%(version)s"
+
+
+
+
+
+==== upstream git without tarballs
+
+-- or (with pristine-tar) --
+mkdir debian20
+cd debian20/
+mkdir hello-cpp
+cd hello-cpp/
+git init
+git ci -m "empty repository" --allow-empty
+git branch pristine-tar
+git remote add upstream git@github.com:ppoile/hello-cpp.git
+git fetch upstream
+git co -b upstream upstream/master 
+git tag -a upstream/0.0.8 -m "Upstream release 0.0.8"
+git co master
+git merge upstream -m "Merge tag 'upstream/0.0.8'"
+cp -r ../../debian10/hello-cpp/debian/ .
+git add debian/
+git ci -m "debianize package"
+cat << EOF > debian/gbp.conf
+[DEFAULT]
+builder = git-pbuilder
+cleaner = fakeroot debian/rules clean
+pristine-tar = True
+pristine-tar-commit = True
+
+[buildpackage]
+export-dir = ../build-area/
+EOF
+git add debian/gbp.conf
+git ci -m "debian: add pristine-tar option for gbp"
+DIST=stable git buildpackage 
+DIST=stable git buildpackage --git-tag
+
+-- or (without pristine-tar) --
+mkdir debian21
+cd debian21/
+mkdir hello-cpp
+cd hello-cpp/
+git init
+git ci -m "empty repository" --allow-empty
+git branch pristine-tar
+git remote add upstream git@github.com:ppoile/hello-cpp.git
+git fetch upstream
+git co -b upstream upstream/master 
+git tag -a upstream/0.0.8 -m "Upstream release 0.0.8"
+git co master
+git merge upstream -m "Merge tag 'upstream/0.0.8'"
+cp -r ../../debian10/hello-cpp/debian/ .
+git add debian/
+git ci -m "debianize package"
+cat << EOF > debian/gbp.conf
+[DEFAULT]
+builder = git-pbuilder
+cleaner = fakeroot debian/rules clean
+
+[buildpackage]
+export-dir = ../build-area/
+EOF
+git add debian/gbp.conf
+git ci -m "debian: disable pristine-tar option for gbp"
+DIST=stable git buildpackage 
+DIST=stable git buildpackage --git-tag
+
+
+==== upstream git with tarballs
+
