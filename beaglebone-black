@@ -8,6 +8,8 @@ Flash: 4GB eMMC
 power up
 ========
 
+Power the board with the USB cable.
+
 To boot from the SD card, press and hold the button next to P8/45 prior to
 powering up the board.
 
@@ -17,7 +19,8 @@ This procedure does not apply when the board is reset.
 serial connection
 =================
 
-(Connect the USB cable and find the device name in /var/log/syslog.)
+Connect the BeagleBone's serial interface through a Serial-to-USB-Converter to
+the PC. (Connect the USB cable and find the device name in /var/log/syslog.)
 
 # apt-get install microcom
 $ microcom -p /dev/ttyUSB0  # Ctrl-\ quit to disconnect
