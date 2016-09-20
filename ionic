@@ -1,0 +1,50 @@
+# install virtualenv, nodeenv
+ 2063  git clone https://github.com/bbvch-academy/ionic2-workshop.git
+ 2064  ll
+ 2065  cd ionic2-workshop/
+ 2066  ll
+ 2067  cd ..
+ 2068  npm ls | less
+ 2069  npm install ionic@beta
+ 2070  npm ls | less
+ 2071  ll
+ 2072  rm -rf node_modules/
+ 2073  cd ionic2-workshop/
+ 2074  ll
+ 2075  rm -rf node_modules/
+ 2076  ll
+ 2077  less package.json 
+ 2078  npm install
+ 2079  cd ..
+ 2080  virtualenv venv
+ 2081  source venv/bin/activate
+ 2082  pip install nodeenv
+ 2083  nodeenv -n 6.5.0 nenv
+ 2084  source nenv/bin/activate 
+ 2085  npm install -g npm
+ 2086  npm install -g ionic@beta cordova
+ 2087  ll
+ 2088  cd ionic2-workshop/
+ 2089  ll
+
+# install java 8
+
+npm install cordova ionic
+
+# install Android Studio
+
+ionic start myAppBlank blank
+
+cd ./myAppBlank
+
+ionic run android --target=dev3
+
+
+
+
+Sep 12 16:12:45 andi-Latitude-E6540 kernel: [52449.563113] usb 3-3: new high-speed USB device number 3 using xhci_hcd
+Sep 12 16:12:45 andi-Latitude-E6540 kernel: [52449.691831] usb 3-3: New USB device found, idVendor=1004, idProduct=631f
+Sep 12 16:12:45 andi-Latitude-E6540 kernel: [52449.691834] usb 3-3: New USB device strings: Mfr=2, Product=3, SerialNumber=4
+Sep 12 16:12:45 andi-Latitude-E6540 kernel: [52449.691835] usb 3-3: Product: LGE Android Phone
+Sep 12 16:12:45 andi-Latitude-E6540 kernel: [52449.691837] usb 3-3: Manufacturer: LG Electronics Inc.
+Sep 12 16:12:45 andi-Latitude-E6540 kernel: [52449.691838] usb 3-3: SerialNumber: 05cf6f675c50e867
