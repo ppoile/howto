@@ -138,3 +138,16 @@ osso-cape pins:
   P2.27 REL5 MCASP0_FSR, C13, 5 (pr1_pru0_pru_r30_5)
   P2.41 REL6 XDMA_EVENT_INTR1/MCASP0_AXR1, D14/D13, -/5 (pr1_pru0_pru_r30_6)
   P2.42 REL8 ECAP0_IN_PWM0_OUT/MCASP0_ACLKR, C18/B12, 0 (PWM)/5 (pr1_pru0_pru_r30_4)
+
+
+Yocto:
+======
+
+- download and extract yocto
+- build toolchain:
+    $ bitbake meta-toolchain
+- download and extract dependencies
+- adapt poky/build/conf/bblayers.conf
+- cd linux-farbsort
+    $ export PATH=$PATH:/home/andi/tmp/poky/build/tmp/sysroots/x86_64-linux/usr/bin/arm-poky-linux-gnueabi
+    $ make -j9 ARCH=arm CROSS_COMPILE=arm-poky-linux-gnueabi- zImage modules am335x-boneblack.dtb
