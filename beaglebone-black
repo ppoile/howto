@@ -239,6 +239,37 @@ proto-cape (amp-showcase-prio-realtime) pins:
                                                      V17  GPMC_A11       gpio1_27(7)                  0x86c=0x27
 
 
+Linux DTS:
+==========
+
+am335x-bonegreen-prucape.dts
+  am33xx.dtsi
+    skeleton.dtsi
+    am33xx-clocks.dtsi
+  am335x-bone-common.dtsi
+    tps65217.dtsi
+  am335x-boneblack-prucape.dtsi
+
+
+am335x-boneblack.dts
+  am33xx.dtsi
+    skeleton.dtsi
+    am33xx-clocks.dtsi
+  am335x-bone-common.dtsi
+    tps65217.dtsi
+
+&ldo3_reg
+&mmc1
+&mmc2
+&cpu0_opp_table
+&am33xx_pinmux
+&lcdc
+&i2c0
+&rtc
+&mcasp0
+&sgx
+
+
 Yocto:
 ======
 
