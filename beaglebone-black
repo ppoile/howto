@@ -151,3 +151,17 @@ Yocto:
 - cd linux-farbsort
     $ export PATH=$PATH:/home/andi/tmp/poky/build/tmp/sysroots/x86_64-linux/usr/bin/arm-poky-linux-gnueabi
     $ make -j9 ARCH=arm CROSS_COMPILE=arm-poky-linux-gnueabi- zImage modules am335x-boneblack.dtb
+
+
+SD card:
+========
+
+Backup:
+- connect and check /var/log/syslog
+- # lsblk
+- # dd if=/dev/sdf of=/tmp/boneblack.img status=progress
+- # fdisk -l /tmp/boneblack.img
+- # mkdir -p /mnt/bb && mount -o loop,offset=$((8 * 512)) /tmp/boneblack.img /mnt/bb
+
+Copy device tree:
+- $ scp arch/arm/boot/dts/am335x-boneblack.dtb root@192.168.35.128:/boot/
