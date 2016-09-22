@@ -281,6 +281,8 @@ Yocto:
 - cd linux-farbsort
     $ export PATH=$PATH:/home/andi/tmp/poky/build/tmp/sysroots/x86_64-linux/usr/bin/arm-poky-linux-gnueabi
     $ make -j9 ARCH=arm CROSS_COMPILE=arm-poky-linux-gnueabi- zImage modules am335x-boneblack.dtb
+- build rootfs:
+    $ bitbake farbsort-image-dev
 
 
 SD card:
