@@ -150,7 +150,7 @@ proto-cape (amp-showcase-prio-hdmi) pins:
     Valve 1 (Output)               BB-P8.12  FT-P18  T12  GPMC_AD12      pru0_gpo(6),gpio1_12(7)      0x830=0x6  PD, O
     Pulse Counter (Input)          BB-P8.15  FT-P5   U13  GPMC_AD15      pru0_gpi(6),gpio1_15(7)      0x83c=0x27 PD, I
     LightBarrier 1 (Input)         BB-P8.16  FT-P6   V13  GPMC_AD14      pru0_gpi(6),gpio1_14(7)      0x838=0x27 PD, I
-    Color detector (Analog-Input)  BB-P9.39  FT-P9   B6   AIN0
+    Color detector (Analog-Input)  BB-P9.39  FT-P8   B6   AIN0
     LightBarrier 2 (Input)         BB-P9.24  FT-P7   D15  UART1_TXD      pru0_gpi(6),gpio0_15(7)      0x984=0x37 PU, I
     Valve 2 (Output)               BB-P9.25  FT-P10  A14  MCASP0_AHCLKX  pru0_gpio7(5,6),gpio3_21(7)  0x9ac=0x27 PD, I
     Valve 3 (Output)               BB-P9.27  FT-P11  C13  MCASP0_FSR     pru0_gpio5(5,6),gpio3_19(7)  0x9a4=0x27 PD, I
