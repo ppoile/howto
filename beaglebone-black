@@ -5,6 +5,7 @@ Processor: AM3358BZCZ100, 1GHz, 2000MIPS
 DRAM: 512MB DDR3L 800MHz
 Flash: 4GB eMMC
 
+
 power up
 ========
 
@@ -43,6 +44,9 @@ $ ssh root@192.168.35.197
 # beaglebone-2:
 $ ssh root@192.168.35.128
 
+$ ssh root@beaglebone
+
+
 PRU
 ===
 
@@ -57,15 +61,10 @@ ssh root@beaglebone-black
 cat /sys/kernel/debug/remoteproc/remoteproc1/trace0
 
 
-Open questions
-==============
-
-- What about TFTP (kernel) and NFS (rootfs)?
-- NFS: Install nfs-common...
-
-
 Links
 =====
+
+https://wiki.bbv.ch/index.php/AMP_Showcase_2016
 
 https://youtrack.bbv.ch/issue/KCP-67
 https://wiki.bbv.ch/index.php/ARM_with_RT-cores
@@ -281,6 +280,8 @@ Yocto:
 - cd linux-farbsort
     $ export PATH=$PATH:/home/andi/tmp/poky/build/tmp/sysroots/x86_64-linux/usr/bin/arm-poky-linux-gnueabi
     $ make -j9 ARCH=arm CROSS_COMPILE=arm-poky-linux-gnueabi- zImage modules am335x-boneblack.dtb
+    $ make -j9 ARCH=arm CROSS_COMPILE=arm-poky-linux-gnueabi- farbsort_defconfig
+    $ make -j9 ARCH=arm CROSS_COMPILE=arm-poky-linux-gnueabi- oldconfig
 - build rootfs:
     $ bitbake --parse-only farbsort-image-dev
     $ bitbake --show-versions farbsort-image-dev
@@ -288,6 +289,16 @@ Yocto:
     $ bitbake farbsort-image-dev
 - clean
     $ rm -rf /home/andi/tmp/poky/build/tmp
+- kernel
+    $ bitbake virtual/kernel -c cleanall
+    $ bitbake virtual/kernel -c fetch
+    $ bitbake virtual/kernel -c cleansstate
+    $ bitbake virtual/kernel -c compile
+- make all
+    $ bitbake parted-native mtools-native dosfstools-native
+    $ bitbake farbsort-image-dev
+    $ wic create sdimage-bootpart -e farbsort-image-dev
+
 
 SD card:
 ========
@@ -299,5 +310,57 @@ Backup:
 - # fdisk -l /tmp/boneblack.img
 - # mkdir -p /mnt/bb && mount -o loop,offset=$((8 * 512)) /tmp/boneblack.img /mnt/bb
 
+Burn:
+- connect and check /var/log/syslog
+- # lsblk
+- # dd if=/var/tmp/wic/build/sdimage-bootpart-201609280832-mmcblk.direct of=/dev/sdc status=progress
+
 Copy device tree:
 - $ scp arch/arm/boot/dts/am335x-boneblack.dtb root@192.168.35.128:/boot/
+
+
+Debian
+======
+
+Connect:
+  $ ssh debian@beaglebone  # passwd: temppwd
+
+Grow/Resize FS:
+  http://elinux.org/Beagleboard:Expanding_File_System_Partition_On_A_microSD
+
+Install:
+  # apt-get update && apt-get autoremove && apt-get upgrade
+  ## it might be necessary to issue 'npm cache clean'
+  # dpkg-reconfigure locales
+  # dpkg-reconfigure tzdata
+  # apt-get install aptitude tree nfs-common ntp virtualenv
+  # mount -tnfs 192.168.35.136:/home/andi /mnt/dev-server-home-andi
+
+Configure GPIOs:
+  $ config-pin -l P8.11
+  $ config-pin -i P8.11
+  $ config-pin -q P8.11
+  $ config-pin P8.11 lo
+  $ config-pin P8.11 hi
+  $ config-pin P8.15 in_pu
+  $ config-pin overlay BB-ADC
+
+DTBOs:
+  # cat /sys/devices/platform/bone_capemgr/slots
+  # cat /sys/kernel/debug/pinctrl/44e10800.pinmux/pins
+  # cat /sys/kernel/debug/pinctrl/44e10800.pinmux/pingroups
+
+/boot/uEnv.txt:
+Change the following two lines:
+-#dtb=am335x-boneblack-nhdmi-overlay.dtb
++#dtb=am335x-boneblack-nhdmi-overlay.dtb
+-#cape_enable=bone_capemgr.enable_partno=
++cape_enable=bone_capemgr.enable_partno=BB-ADC
+
+Angular2:
+  https://angular.io/docs/js/latest/quickstart.html
+
+
+HDMI
+====
+Works with Debian image but not with our yocto one.
