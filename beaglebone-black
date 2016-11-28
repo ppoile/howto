@@ -314,6 +314,7 @@ Burn:
 - connect and check /var/log/syslog
 - # lsblk
 - # dd if=/var/tmp/wic/build/sdimage-bootpart-201609280832-mmcblk.direct of=/dev/sdc status=progress
+- # xzcat <xz-file> | dd of=/dev/sdf status=progress
 
 Copy device tree:
 - $ scp arch/arm/boot/dts/am335x-boneblack.dtb root@192.168.35.128:/boot/
@@ -353,14 +354,14 @@ DTBOs:
 /boot/uEnv.txt:
 Change the following two lines:
 -#dtb=am335x-boneblack-nhdmi-overlay.dtb
-+#dtb=am335x-boneblack-nhdmi-overlay.dtb
++dtb=am335x-boneblack-nhdmi-overlay.dtb
 -#cape_enable=bone_capemgr.enable_partno=
-+cape_enable=bone_capemgr.enable_partno=BB-ADC
++cape_enable=bone_capemgr.enable_partno=BB-ADC,BB-BONE-PRU
 
-Angular2:
-  https://angular.io/docs/js/latest/quickstart.html
-
+$ dtc -O dtb -o BB-BONE-PRU-00A0.dtbo -b 0 -@ BB-BONE-PRU-00A0.dts
+copy to target /lib/firmware/BB-BONE-PRU-00A0.dtbo
+$ sudo update-initramfs -uk `uname -r`
 
 HDMI
 ====
-Works with Debian image but not with our yocto one.
+Works with Debian image but not yet with our yocto one.
